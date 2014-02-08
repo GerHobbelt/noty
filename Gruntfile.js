@@ -1,6 +1,5 @@
 module.exports = function (grunt) {
 	grunt.initConfig({
-
 		concat: {
 			dist: {
 				src: ['js/noty/jquery.noty.js', 'js/noty/layouts/*.js', 'js/noty/themes/*.js'],
