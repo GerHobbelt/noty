@@ -178,6 +178,10 @@ if (typeof Object.create !== 'function') {
               return;
             }
 
+            if (self.options.callback.beforeClose) {
+                if (self.options.callback.beforeClose.apply(self)) return;
+            }
+
             if (!this.shown && !this.showing) { // If we are still waiting in the queue just delete from queue
                 var queue = [];
                 $.each($.noty.queue, function (i, n) {
@@ -457,6 +461,9 @@ if (typeof Object.create !== 'function') {
             onShow: function () {
             },
             afterShow: function () {
+            },
+            beforeClose: function () {
+                return false;               // return true when the close must not happen. User is responsible for calling close() then!
             },
             onClose: function () {
             },
