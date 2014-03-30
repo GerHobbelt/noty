@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Watchdog mode: keep particular noty messages 'alive'</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="demonstration of some noty capabilities">
+
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic&amp;subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+
+        html {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'PT Sans', Tahoma, Arial, serif;
+            line-height: 13px
+        }
+
+        .info-chunk {
+            margin-top: 15em;
+            margin-left: 2em;
+            margin-right: 2em;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="buttons.css"/>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div id="customContainer"></div>
+
+</div>
+
+<div class="info-chunk">
+    <p>Click the 'kick' buttons to keep the indicated notice around for another 10 seconds. (This is a cummulative effect: every click will increase the total time visible by 10 seconds.)</p>
+
+    <button class="kickTheDog4Warn">Kick the Warning notice</button>
+    <button class="kickTheDog4Notice">Kick the Info notice</button>
+
+    <p>The 'error' noty message is kept alive in a different way: click the 'kick' button to start a timer; when the 'error' noty's <code>beforeClose</code> callback fires while this timer has not yet counted down to 0 (zero), then the 'error' noty is 'kicked alive' for another 3 seconds (in which time you have the opportunity to restart this countdown timer and let it all happen again).</p>
+
+    <p>Countdown: <span id="countdown">---</span></p>
+
+    <button class="restartMyTimer">Restart the countdown timer</button>
+</div>
+
+<script src="jquery.js"></script>
+
+<!-- noty -->
+<script type="text/javascript" src="../js/noty/packaged/jquery.noty.packaged.js"></script>
+
+<script type="text/javascript">
+
+    function generate(type, options) {
+        options = options || {};
+        var n = noty({
+            text        : type,
+            type        : type,
+            dismissQueue: true,
+            layout      : 'topCenter',
+            theme       : 'defaultTheme',
+            timeout     : 5000,
+            callback    : options
+        });
+        console.log('html: ' + n.options.id);
+        return n;
+    }
+
+    function generateAll() {
+        var a = {};
+        a.alert = generate('alert');
+        a.info = generate('information');
+        a.error = generate('error', {
+            beforeClose: function() {
+                if (count > 0) {
+                    // add 3 more seconds delay
+                    a.error.setTimeout(3000);
+                    kick = 3;
+                    return true; // signal: do NOT close the noty now!
+                }
+                return false;
+            }
+        });
+        a.warn = generate('warning');
+        a.notice = generate('notification');
+        a.success = generate('success');
+        return a;
+    }
+
+    var timer = null;
+    var count = 0;
+    var kick = false;       // not required, but just nice to see the 'error' noty kicks count down, approximately
+    function tock() {
+        count--;
+        if (kick !== false) kick--;
+        $('#countdown').html('' + count + (kick !== false ? " / KICK - " + (3 - kick) : ""));
+
+        if (count <= 0) {
+            if (timer) clearInterval(timer);
+            timer = null;
+        } else if (!timer) {
+            timer = setInterval(tock, 1000);
+        }
+    }
+    
+    $(document).ready(function () {
+        var l = generateAll();
+
+        $('.kickTheDog4Warn').click(function() {
+            l.warn.setTimeout(10000);
+        });
+        $('.kickTheDog4Notice').click(function() {
+            l.notice.setTimeout(10000);
+        });
+
+        $('.restartMyTimer').click(function() {
+            count = 10 + 1;
+            if (kick !== false) kick++;
+            tock();
+        });
+    });
+
+</script>
+</body>
+</html>

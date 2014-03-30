@@ -1,4 +1,4 @@
-;(function($) {
+(function($) {
 
 	$.noty.themes.defaultTheme = {
 		name: 'defaultTheme',
@@ -13,9 +13,9 @@
 						case 'topCenter': case 'topLeft': case 'topRight':
 						case 'bottomCenter': case 'bottomLeft': case 'bottomRight':
 						case 'center': case 'centerLeft': case 'centerRight': case 'inline':
-						$(selector).css({borderRadius: '0px 0px 0px 0px'});
-						$(selector).first().css({'border-top-left-radius': '5px', 'border-top-right-radius': '5px'});
-						$(selector).last().css({'border-bottom-left-radius': '5px', 'border-bottom-right-radius': '5px'}); break;
+							$(selector).css({borderRadius: '0px 0px 0px 0px'});
+							$(selector).first().css({'border-top-left-radius': '5px', 'border-top-right-radius': '5px'});
+							$(selector).last().css({'border-bottom-left-radius': '5px', 'border-bottom-right-radius': '5px'}); break;
 						case 'bottom':
 							$(selector).css({borderRadius: '0px 0px 0px 0px'});
 							$(selector).first().css({borderRadius: '5px 5px 0px 0px'}); break;
@@ -77,7 +77,7 @@
 				marginLeft: 0
 			});
 
-			this.$bar.bind({
+			this.$bar.on({
 				mouseenter: function() { $(this).find('.noty_close').stop().fadeTo('normal',1); },
 				mouseleave: function() { $(this).find('.noty_close').stop().fadeTo('normal',0); }
 			});
@@ -91,24 +91,24 @@
 						borderRight: '2px solid #eee',
 						boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
 					});
-					break;
+				break;
 				case 'topCenter': case 'center': case 'bottomCenter': case 'inline':
-				this.$bar.css({
-					borderRadius: '5px',
-					border: '1px solid #eee',
-					boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
-				});
-				this.$message.css({fontSize: '13px', textAlign: 'center'});
+					this.$bar.css({
+						borderRadius: '5px',
+						border: '1px solid #eee',
+						boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
+					});
+					this.$message.css({fontSize: '13px', textAlign: 'center'});
 				break;
 				case 'topLeft': case 'topRight':
 				case 'bottomLeft': case 'bottomRight':
 				case 'centerLeft': case 'centerRight':
-				this.$bar.css({
-					borderRadius: '5px',
-					border: '1px solid #eee',
-					boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
-				});
-				this.$message.css({fontSize: '13px', textAlign: 'left'});
+					this.$bar.css({
+						borderRadius: '5px',
+						border: '1px solid #eee',
+						boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
+					});
+					this.$message.css({fontSize: '13px', textAlign: 'left'});
 				break;
 				case 'bottom':
 					this.$bar.css({
@@ -118,18 +118,18 @@
 						borderRight: '2px solid #eee',
 						boxShadow: "0 -2px 4px rgba(0, 0, 0, 0.1)"
 					});
-					break;
+				break;
 				default:
 					this.$bar.css({
 						border: '2px solid #eee',
 						boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
 					});
-					break;
+				break;
 			}
 
 			switch (this.options.type) {
 				case 'alert': case 'notification':
-				this.$bar.css({backgroundColor: '#FFF', borderColor: '#CCC', color: '#444'}); break;
+					this.$bar.css({backgroundColor: '#FFF', borderColor: '#CCC', color: '#444'}); break;
 				case 'warning':
 					this.$bar.css({backgroundColor: '#FFEAA8', borderColor: '#FFC237', color: '#826200'});
 					this.$buttons.css({borderTop: '1px solid #FFC237'}); break;

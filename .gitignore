@@ -1,4 +1,8 @@
+child/
 
 .DS_Store
-node_modules
+
+.idea/
+
+node_modules/
 _SpecRunner.html
