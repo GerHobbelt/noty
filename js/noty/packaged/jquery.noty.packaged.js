@@ -75,7 +75,7 @@ if (typeof Object.create !== 'function') {
                 $.each(this.options.buttons, function (i, button) {
                     var $button = $('<button/>').addClass((button.addClass) ? button.addClass : 'gray').html(button.text).attr('id', button.id ? button.id : 'button-' + i)
                         .appendTo(self.$bar.find('.noty_buttons'))
-                        .bind('click', function () {
+                        .on('click', function () {
                             if ($.isFunction(button.onClick)) {
                                 button.onClick.call($button, self);
                             }
@@ -475,7 +475,7 @@ if (typeof Object.create !== 'function') {
         buttons: false
     };
 
-    $(window).resize(function () {
+    $(window).on('resize', function () {
         $.each($.noty.layouts, function (index, layout) {
             layout.container.style.apply($(layout.container.selector));
         });
@@ -1102,7 +1102,7 @@ window.noty = function noty(options) {
 				marginLeft: 0
 			});
 
-			this.$bar.bind({
+			this.$bar.on({
 				mouseenter: function() { $(this).find('.noty_close').stop().fadeTo('normal',1); },
 				mouseleave: function() { $(this).find('.noty_close').stop().fadeTo('normal',0); }
 			});
