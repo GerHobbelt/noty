@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Notification Types</title>
+    <title>Bootstrap Theme</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="demonstration of some noty capabilities">
 
@@ -23,7 +23,7 @@
     </style>
 
     <link rel="stylesheet" type="text/css" href="buttons.css"/>
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -33,40 +33,37 @@
 
 </div>
 
-<script src="jquery.js"></script>
+<script src="jquery-1.7.2.min.js"></script>
 
 <!-- noty -->
-<script type="text/javascript" src="../js/noty/packaged/jquery.noty.packaged.js"></script>
+<script type="text/javascript" src="../js/noty/packaged/jquery.noty.packaged.min.js"></script>
 
 <script type="text/javascript">
 
-    function generate(type) {
+    function generate(type, theme) {
         var n = noty({
-            text        : type,
+            text        : theme + ' > ' + type,
             type        : type,
             dismissQueue: true,
-            timeout     : 10000,
-            closeWith   : ['click'],
             layout      : 'topCenter',
-            theme       : 'defaultTheme',
-            maxVisible  : 10
+            theme       : theme,
+            closeWith   : ['button', 'click'],
+            maxVisible  : 20,
+            modal       : false
         });
         console.log('html: ' + n.options.id);
     }
 
     function generateAll() {
-        generate('alert');
-        generate('information');
-        generate('error');
-        generate('warning');
-        generate('notification');
-        generate('success');
+        generate('alert', 'bootstrapTheme');
+        generate('information', 'bootstrapTheme');
+        generate('error', 'bootstrapTheme');
+        generate('warning', 'bootstrapTheme');
+        generate('success', 'bootstrapTheme');
     }
 
     $(document).ready(function () {
-
         generateAll();
-
     });
 
 </script>
