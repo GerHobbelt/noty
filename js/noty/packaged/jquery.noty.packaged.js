@@ -1,13 +1,16 @@
 !function(root, factory) {
 	 if (typeof define === 'function' && define.amd) {
 		 define(['jquery'], factory);
+	 } else if (typeof exports === 'object') {
+		 module.exports = factory(require('jquery'));
 	 } else {
 		 factory(root.jQuery);
- } }(this, function($) {
+	 }
+}(this, function($) {
 
 /*!
  @package noty - jQuery Notification Plugin
- @version version: 2.3.6
+ @version version: 2.3.7
  @contributors https://github.com/needim/noty/graphs/contributors
 
  @documentation Examples and Documentation - http://needim.github.com/noty/
@@ -234,15 +237,16 @@
         }, // end close
 
         closeCleanUp: function() {
-
             var self = this;
 
             // Modal Cleaning
             if(self.options.modal) {
                 $.notyRenderer.setModalCount(-1);
-                if($.notyRenderer.getModalCount() == 0) $('.noty_modal').fadeOut('fast', function() {
-                    $(this).remove();
-                });
+                if($.notyRenderer.getModalCount() == 0) {
+                    $('.noty_modal').fadeOut('fast', function() {
+                        $(this).remove();
+                    });
+                }
             }
 
             // Layout Cleaning
@@ -539,8 +543,9 @@
 
     // Helpers
     window.noty = function noty(options) {
-        return jQuery.notyRenderer.init(options);
+        return $.notyRenderer.init(options);
     };
+
 $.noty.layouts.bottom = {
     name     : 'bottom',
     options  : {},
@@ -1428,5 +1433,7 @@ $.noty.themes.relax = {
     }
 };
 
+
+return window.noty;
 
 });
