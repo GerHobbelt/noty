@@ -1,6 +1,6 @@
 /*!
  @package noty - jQuery Notification Plugin
- @version version: 2.3.7
+ @version version: 2.3.8
  @contributors https://github.com/needim/noty/graphs/contributors
 
  @documentation Examples and Documentation - http://needim.github.com/noty/
@@ -131,7 +131,7 @@
                 });
             }
 
-            if ($.inArray('button', self.options.closeWith) == -1) {
+            if ($.inArray('button', self.options.closeWith) === -1) {
                 self.$closeButton.remove();
             }
 
@@ -139,7 +139,7 @@
                 self.options.callback.onShow.apply(self);
             }
 
-            if (typeof self.options.animation.open == 'string') {
+            if (typeof self.options.animation.open === 'string') {
                 self.$bar.css('height', self.$bar.innerHeight());
                 self.$bar.show().addClass(self.options.animation.open).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
@@ -192,7 +192,7 @@
             if(!this.shown && !this.showing) { // If we are still waiting in the queue just delete from queue
                 var queue = [];
                 $.each($.noty.queue, function(i, n) {
-                    if(n.options.id != self.options.id) {
+                    if(n.options.id !== self.options.id) {
                         queue.push(n);
                     }
                 });
@@ -206,7 +206,7 @@
                 self.options.callback.onClose.apply(self);
             }
 
-            if (typeof self.options.animation.close == 'string') {
+            if (typeof self.options.animation.close === 'string') {
                 self.$bar.addClass(self.options.animation.close).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
                     self.closeCleanUp();
@@ -232,7 +232,7 @@
             // Modal Cleaning
             if(self.options.modal) {
                 $.notyRenderer.setModalCount(-1);
-                if($.notyRenderer.getModalCount() == 0) {
+                if($.notyRenderer.getModalCount() === 0) {
                     $('.noty_modal').fadeOut('fast', function() {
                         $(this).remove();
                     });
@@ -241,12 +241,12 @@
 
             // Layout Cleaning
             $.notyRenderer.setLayoutCountFor(self, -1);
-            if($.notyRenderer.getLayoutCountFor(self) == 0) $(self.options.layout.container.selector).remove();
+            if($.notyRenderer.getLayoutCountFor(self) === 0) $(self.options.layout.container.selector).remove();
 
             // Make sure self.$bar has not been removed before attempting to remove it
             if(typeof self.$bar !== 'undefined' && self.$bar !== null) {
 
-                if (typeof self.options.animation.close == 'string') {
+                if (typeof self.options.animation.close === 'string') {
                     self.$bar.css('transition', 'all 100ms ease').css('border', 0).css('margin', 0).height(0);
                     self.$bar.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function() {
                     self.$bar.remove();
@@ -340,7 +340,7 @@
 
         $.notyRenderer.render();
 
-        return ($.noty.returns == 'object') ? notification : notification.options.id;
+        return ($.noty.returns === 'object') ? notification : notification.options.id;
     };
 
     $.notyRenderer.render = function() {
@@ -377,7 +377,7 @@
 
         // Where is the container?
         if(notification.options.custom) {
-            if(notification.options.custom.find(notification.options.layout.container.selector).length == 0) {
+            if(notification.options.custom.find(notification.options.layout.container.selector).length === 0) {
                 notification.options.custom.append($(notification.options.layout.container.object).addClass('i-am-new'));
             }
             else {
@@ -385,7 +385,7 @@
             }
         }
         else {
-            if($(notification.options.layout.container.selector).length == 0) {
+            if($(notification.options.layout.container.selector).length === 0) {
                 $('body').append($(notification.options.layout.container.object).addClass('i-am-new'));
             }
             else {
@@ -399,7 +399,7 @@
     };
 
     $.notyRenderer.createModalFor = function(notification) {
-        if($('.noty_modal').length == 0) {
+        if($('.noty_modal').length === 0) {
             var modal = $('<div/>').addClass('noty_modal').addClass(notification.options.theme).data('noty_modal_count', 0);
 
             if(notification.options.theme.modal && notification.options.theme.modal.css)
