@@ -1,6 +1,6 @@
 /*!
  @package noty - jQuery Notification Plugin
- @version version: 2.3.8
+ @version version: 2.3.6
  @contributors https://github.com/needim/noty/graphs/contributors
 
  @documentation Examples and Documentation - http://needim.github.com/noty/
@@ -140,7 +140,18 @@
                 self.options.callback.onShow.apply(self);
             }
 
-            if (typeof self.options.animation.open === 'string') {
+            if (!self.options.animation.open) {
+                self.$bar.fadeIn(
+                    self.options.animation.speed,
+                    self.options.animation.easing,
+                    function() {
+                        if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
+                        self.showing = false;
+                        self.shown = true;
+                    }
+                );
+            }
+            else if (typeof self.options.animation.open === 'string') {
                 self.$bar.css('height', self.$bar.innerHeight());
                 self.$bar.show().addClass(self.options.animation.open).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
@@ -207,7 +218,20 @@
                 self.options.callback.onClose.apply(self);
             }
 
-            if (typeof self.options.animation.close === 'string') {
+            if (!self.options.animation.close) {
+                self.$bar.fadeOut(
+                    self.options.animation.speed,
+                    self.options.animation.easing,
+                    function() {
+                        if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
+                    }
+                ).promise().done(
+                    function() {
+                        self.closeCleanUp();
+                    }
+                );
+            }
+            else if (typeof self.options.animation.close === 'string') {
                 self.$bar.addClass(self.options.animation.close).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
                     self.closeCleanUp();

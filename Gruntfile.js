@@ -50,11 +50,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-release-component');
-	grunt.registerTask('default', ['build']);
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-wrap');
 
-    grunt.registerTask('build', ['bump', 'concat', 'wrap', 'uglify:minifyJS']);
+    grunt.registerTask('build', ['bump', 'conc', 'ugly']);
+    grunt.registerTask('default', ['conc', 'ugly']);
     grunt.registerTask('conc', ['concat', 'wrap']);
     grunt.registerTask('ugly', ['uglify:minifyJS']);
 };
