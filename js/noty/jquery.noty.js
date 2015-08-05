@@ -65,7 +65,11 @@
 
                 var $buttons = $('<div/>').addClass('noty_buttons');
 
-                (this.options.layout.parent.object !== null) ? this.$bar.find('.noty_bar').append($buttons) : this.$bar.append($buttons);
+                if (this.options.layout.parent.object !== null) {
+                    this.$bar.find('.noty_bar').append($buttons);
+                } else { 
+                    this.$bar.append($buttons);
+                }
 
                 var self = this;
 
@@ -92,12 +96,21 @@
         show:function () {
             var self = this;
 
-            (self.options.custom) ? self.options.custom.find(self.options.layout.container.selector).append(self.$bar) : $(self.options.layout.container.selector).append(self.$bar);
+            if (self.options.custom) {
+                self.options.custom.find(self.options.layout.container.selector).append(self.$bar);
+            } else {
+                $(self.options.layout.container.selector).append(self.$bar);
+            }
 
-            if(self.options.theme && self.options.theme.style)
+            if(self.options.theme && self.options.theme.style) {
                 self.options.theme.style.apply(self);
+            }
 
-            ($.type(self.options.layout.css) === 'function') ? this.options.layout.css.apply(self.$bar) : self.$bar.css(this.options.layout.css || {});
+            if ($.type(self.options.layout.css) === 'function') {
+                this.options.layout.css.apply(self.$bar);
+            } else {
+                self.$bar.css(this.options.layout.css || {});
+            }
 
             self.$bar.addClass(self.options.layout.addClass);
 
@@ -158,7 +171,6 @@
                     self.showing = false;
                     self.shown = true;
                 });
-
             } else {
                 self.$bar.animate(
                     self.options.animation.open,
@@ -260,7 +272,7 @@
             // Modal Cleaning
             if(self.options.modal) {
                 $.notyRenderer.setModalCount(-1);
-                if($.notyRenderer.getModalCount() == 0) {
+                if($.notyRenderer.getModalCount() === 0) {
                     $('.noty_modal').fadeOut(self.options.animation.fadeSpeed, function() {
                         $(this).remove();
                     });
@@ -364,7 +376,11 @@
             $.noty.closeAll();
         }
 
-        (notification.options.force) ? $.noty.queue.unshift(notification) : $.noty.queue.push(notification);
+        if (notification.options.force) {
+            $.noty.queue.unshift(notification);
+        } else {
+            $.noty.queue.push(notification);
+        }
 
         $.notyRenderer.render();
 
@@ -430,15 +446,17 @@
         if($('.noty_modal').length === 0) {
             var modal = $('<div/>').addClass('noty_modal').addClass(notification.options.theme).data('noty_modal_count', 0);
 
-            if(notification.options.theme.modal && notification.options.theme.modal.css)
+            if(notification.options.theme.modal && notification.options.theme.modal.css) {
                 modal.css(notification.options.theme.modal.css);
+            }
 
             modal.prependTo($('body')).fadeIn(self.options.animation.fadeSpeed);
 
-            if($.inArray('backdrop', notification.options.closeWith) > -1)
+            if($.inArray('backdrop', notification.options.closeWith) > -1) {
                 modal.on('click', function(e) {
                     $.noty.closeAll();
                 });
+            }
         }
     };
 
@@ -503,10 +521,11 @@
 
     $.noty.consumeAlert = function(options) {
         window.alert = function(text) {
-            if(options)
+            if(options) {
                 options.text = text;
-            else
+            } else {
                 options = {text:text};
+            }
 
             $.notyRenderer.init(options);
         };
