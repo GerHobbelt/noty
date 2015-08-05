@@ -10,7 +10,7 @@
 
 /*!
  @package noty - jQuery Notification Plugin
- @version version: 2.3.5
+ @version version: 2.3.7
  @contributors https://github.com/needim/noty/graphs/contributors
 
  @documentation Examples and Documentation - http://needim.github.com/noty/
@@ -83,6 +83,7 @@
 
                 $.each(this.options.buttons, function(i, button) {
                     var $button = $('<button/>').addClass((button.addClass) ? button.addClass : 'gray').html(button.text).attr('id', button.id ? button.id : 'button-' + i)
+                        .attr('title', button.title)
                         .appendTo(self.$bar.find('.noty_buttons'))
                         .on('click', function(event) {
                             if($.isFunction(button.onClick)) {
@@ -114,7 +115,7 @@
 
             self.$bar.addClass(self.options.layout.addClass);
 
-            self.options.layout.container.style.apply($(self.options.layout.container.selector));
+            self.options.layout.container.style.apply($(self.options.layout.container.selector), [self.options.within]);
 
             self.showing = true;
 
@@ -147,18 +148,7 @@
             if(self.options.callback.onShow)
                 self.options.callback.onShow.apply(self);
 
-            if (!self.options.animation.open) {
-                self.$bar.fadeIn(
-                    self.options.animation.speed,
-                    self.options.animation.easing,
-                    function() {
-                        if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
-                        self.showing = false;
-                        self.shown = true;
-                    }
-                );
-            }
-            else if (typeof self.options.animation.open == 'string') {
+            if (typeof self.options.animation.open == 'string') {
                 self.$bar.css('height', self.$bar.innerHeight());
                 self.$bar.show().addClass(self.options.animation.open).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
@@ -180,9 +170,9 @@
 
             // If noty is have a timeout option
             if(self.options.timeout)
-                setTimeout(function() {
+                self.$bar.delay(self.options.timeout).promise().done(function() {
                     self.close();
-                }, self.options.timeout);
+                });
 
             return this;
 
@@ -221,20 +211,7 @@
                 self.options.callback.onClose.apply(self);
             }
 
-            if (!self.options.animation.close) {
-                self.$bar.fadeOut(
-                    self.options.animation.speed,
-                    self.options.animation.easing,
-                    function() {
-                        if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
-                    }
-                ).promise().done(
-                    function() {
-                        self.closeCleanUp();
-                    }
-                );
-            }
-            else if (typeof self.options.animation.close == 'string') {
+            if (typeof self.options.animation.close == 'string') {
                 self.$bar.addClass(self.options.animation.close).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
                     self.closeCleanUp();
@@ -261,7 +238,7 @@
             // Modal Cleaning
             if(self.options.modal) {
                 $.notyRenderer.setModalCount(-1);
-                if($.notyRenderer.getModalCount() == 0) $('.noty_modal').fadeOut('fast', function() {
+                if($.notyRenderer.getModalCount() == 0) $('.noty_modal').fadeOut(self.options.animation.fadeSpeed, function() {
                     $(this).remove();
                 });
             }
@@ -439,7 +416,7 @@
             if(notification.options.theme.modal && notification.options.theme.modal.css)
                 modal.css(notification.options.theme.modal.css);
 
-            modal.prependTo($('body')).fadeIn('fast');
+            modal.prependTo($('body')).fadeIn(self.options.animation.fadeSpeed);
 
             if($.inArray('backdrop', notification.options.closeWith) > -1)
                 modal.on('click', function(e) {
@@ -533,7 +510,8 @@
             open  : {height: 'toggle'},
             close : {height: 'toggle'},
             easing: 'swing',
-            speed : 500
+            speed : 500,
+            fadeSpeed: 'fast',
         },
         timeout     : false,
         force       : false,
