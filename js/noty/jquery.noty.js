@@ -71,6 +71,7 @@
 
                 $.each(this.options.buttons, function(i, button) {
                     var $button = $('<button/>').addClass((button.addClass) ? button.addClass : 'gray').html(button.text).attr('id', button.id ? button.id : 'button-' + i)
+                        .attr('title', button.title)
                         .appendTo(self.$bar.find('.noty_buttons'))
                         .on('click', function(event) {
                             if($.isFunction(button.onClick)) {
@@ -100,7 +101,7 @@
 
             self.$bar.addClass(self.options.layout.addClass);
 
-            self.options.layout.container.style.apply($(self.options.layout.container.selector));
+            self.options.layout.container.style.apply($(self.options.layout.container.selector), [self.options.within]);
 
             self.showing = true;
 
@@ -232,8 +233,8 @@
             // Modal Cleaning
             if(self.options.modal) {
                 $.notyRenderer.setModalCount(-1);
-                if($.notyRenderer.getModalCount() === 0) {
-                    $('.noty_modal').fadeOut('fast', function() {
+                if($.notyRenderer.getModalCount() == 0) {
+                    $('.noty_modal').fadeOut(self.options.animation.fadeSpeed, function() {
                         $(this).remove();
                     });
                 }
@@ -405,7 +406,7 @@
             if(notification.options.theme.modal && notification.options.theme.modal.css)
                 modal.css(notification.options.theme.modal.css);
 
-            modal.prependTo($('body')).fadeIn('fast');
+            modal.prependTo($('body')).fadeIn(self.options.animation.fadeSpeed);
 
             if($.inArray('backdrop', notification.options.closeWith) > -1)
                 modal.on('click', function(e) {
@@ -499,7 +500,8 @@
             open:{height:'toggle'},
             close:{height:'toggle'},
             easing: 'swing',
-            speed:500
+            speed : 500,
+            fadeSpeed: 'fast',
         },
         timeout:false,
         force:false,
