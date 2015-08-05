@@ -193,7 +193,7 @@
                     function() {
                         self.close.apply(self);
                     }
-              );
+                );
                 return;
             }
 
@@ -290,24 +290,24 @@
                     self.$bar = null;
                     self.closed = true;
                 }
-                    }
+            }
 
-                    delete $.noty.store[self.options.id]; // deleting noty from store
+            delete $.noty.store[self.options.id]; // deleting noty from store
 
-                    if(self.options.theme.callback && self.options.theme.callback.onClose) {
-                        self.options.theme.callback.onClose.apply(self);
-                    }
+            if(self.options.theme.callback && self.options.theme.callback.onClose) {
+                self.options.theme.callback.onClose.apply(self);
+            }
 
-                    if (!self.options.dismissQueue) {
-                        // Queue render
-                        $.noty.ontap = true;
+            if (!self.options.dismissQueue) {
+                // Queue render
+                $.noty.ontap = true;
 
-                        $.notyRenderer.render();
-                    }
+                $.notyRenderer.render();
+            }
 
-					if (self.options.maxVisible > 0 && self.options.dismissQueue) {
-						$.notyRenderer.render();
-					}
+			if (self.options.maxVisible > 0 && self.options.dismissQueue) {
+				$.notyRenderer.render();
+			}
 
         }, // end close clean up
 
@@ -377,7 +377,7 @@
         if($.type(instance) === 'object') {
             if(instance.options.dismissQueue) {
                 if(instance.options.maxVisible > 0) {
-                    while($(instance.options.layout.container.selector + ' li').not('.i-am-closing-now').length < instance.options.maxVisible) {
+                    if($(instance.options.layout.container.selector + ' li').not('.i-am-closing-now').length < instance.options.maxVisible) {
                         $.notyRenderer.show($.noty.queue.shift());
                     }
                 }
