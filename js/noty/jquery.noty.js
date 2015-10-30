@@ -8,8 +8,8 @@
  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
  */
 
-    if(typeof Object.create !== 'function') {
-        Object.create = function(o) {
+    if (typeof Object.create !== 'function') {
+        Object.create = function (o) {
             function F() {
             }
 
@@ -19,13 +19,13 @@
     }
 
     var NotyObject = {
-        init:function (options) {
+        init: function (options) {
             // Mix in the passed in options with the default options
             this.options = $.extend({}, $.noty.defaults, options);
 
             this.options.layout = (this.options.custom) ? $.noty.layouts['inline'] : $.noty.layouts[this.options.layout];
 
-            if($.noty.themes[this.options.theme])
+            if ($.noty.themes[this.options.theme])
                 this.options.theme = $.noty.themes[this.options.theme];
             else
                 options.themeClassName = this.options.theme;
@@ -45,7 +45,7 @@
             return this;
         }, // end init
 
-        _build:function () {
+        _build: function () {
 
             // Generating noty bar
             var $bar = $('<div class="noty_bar noty_type_' + this.options.type + '"></div>').attr('id', this.options.id);
@@ -58,7 +58,7 @@
             }
 
             // Set buttons if available
-            if(this.options.buttons) {
+            if (this.options.buttons) {
                 // If we have button disable closeWith & timeout options
                 this.options.closeWith = [];
                 this.options.timeout = false;
@@ -73,12 +73,12 @@
 
                 var self = this;
 
-                $.each(this.options.buttons, function(i, button) {
+                $.each(this.options.buttons, function (i, button) {
                     var $button = $('<button/>').addClass((button.addClass) ? button.addClass : 'gray').html(button.text).attr('id', button.id ? button.id : 'button-' + i)
                         .attr('title', button.title)
                         .appendTo(self.$bar.find('.noty_buttons'))
-                        .on('click', function(event) {
-                            if($.isFunction(button.onClick)) {
+                        .on('click', function (event) {
+                            if ($.isFunction (button.onClick)) {
                                 button.onClick.call($button, self, event);
                             }
                         });
@@ -93,7 +93,7 @@
             $.noty.store[this.options.id] = this; // store noty for api
         }, // end _build
 
-        show:function () {
+        show: function () {
             var self = this;
 
             if (self.options.custom) {
@@ -102,7 +102,7 @@
                 $(self.options.layout.container.selector).append(self.$bar);
             }
 
-            if(self.options.theme && self.options.theme.style) {
+            if (self.options.theme && self.options.theme.style) {
                 self.options.theme.style.apply(self);
             }
 
@@ -123,9 +123,9 @@
             }
 
             if ($.inArray('click', self.options.closeWith) > -1) {
-                self.$bar.css('cursor', 'pointer').one('click', function(evt) {
+                self.$bar.css('cursor', 'pointer').one('click', function (evt) {
                     self.stopPropagation(evt);
-                    if(self.options.callback.onCloseClick) {
+                    if (self.options.callback.onCloseClick) {
                         self.options.callback.onCloseClick.apply(self);
                     }
                     self.close();
@@ -133,13 +133,13 @@
             }
 
             if ($.inArray('hover', self.options.closeWith) > -1) {
-                self.$bar.one('mouseenter', function() {
+                self.$bar.one('mouseenter', function () {
                     self.close();
                 });
             }
 
             if ($.inArray('button', self.options.closeWith) > -1) {
-                self.$closeButton.one('click', function(evt) {
+                self.$closeButton.one('click', function (evt) {
                     self.stopPropagation(evt);
                     self.close();
                 });
@@ -157,8 +157,8 @@
                 self.$bar.fadeIn(
                     self.options.animation.speed,
                     self.options.animation.easing,
-                    function() {
-                        if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
+                    function () {
+                        if (self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
                         self.showing = false;
                         self.shown = true;
                     }
@@ -166,15 +166,15 @@
             }
             else if (typeof self.options.animation.open === 'string') {
                 self.$bar.css('height', self.$bar.innerHeight());
-                self.$bar.on('click',function(e){
+                self.$bar.on('click', function (e) {
                     self.wasClicked = true;
                 });
-                self.$bar.show().addClass(self.options.animation.open).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                    if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
+                self.$bar.show().addClass(self.options.animation.open).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                    if (self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
                     self.showing = false;
                     self.shown = true;
-                    if(self.hasOwnProperty('wasClicked')){
-                        self.$bar.off('click',function(e){
+                    if (self.hasOwnProperty('wasClicked')) {
+                        self.$bar.off('click', function (e) {
                             self.wasClicked = true;
                         });
                         self.close();
@@ -185,8 +185,8 @@
                     self.options.animation.open,
                     self.options.animation.speed,
                     self.options.animation.easing,
-                    function() {
-                        if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
+                    function () {
+                        if (self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
                         self.showing = false;
                         self.shown = true;
                     });
@@ -194,7 +194,7 @@
 
             // If noty has a timeout option
             if (self.options.timeout) {
-                self.$bar.delay(self.options.timeout).promise().done(function() {
+                self.$bar.delay(self.options.timeout).promise().done(function () {
                     self.close();
                 });
             }
@@ -203,15 +203,15 @@
 
         }, // end show
 
-        close:function () {
-            if(this.closed) return;
-            if(this.$bar && this.$bar.hasClass('i-am-closing-now')) return;
+        close: function () {
+            if (this.closed) return;
+            if (this.$bar && this.$bar.hasClass('i-am-closing-now')) return;
 
             var self = this;
 
-            if(this.showing) {
+            if (this.showing) {
                 self.$bar.queue(
-                    function() {
+                    function () {
                         self.close.apply(self);
                     }
                 );
@@ -222,10 +222,10 @@
                 if (self.options.callback.beforeClose.apply(self)) return;
             }
 
-            if(!this.shown && !this.showing) { // If we are still waiting in the queue just delete from queue
+            if (!this.shown && !this.showing) { // If we are still waiting in the queue just delete from queue
                 var queue = [];
-                $.each($.noty.queue, function(i, n) {
-                    if(n.options.id !== self.options.id) {
+                $.each($.noty.queue, function (i, n) {
+                    if (n.options.id !== self.options.id) {
                         queue.push(n);
                     }
                 });
@@ -238,7 +238,7 @@
 
             self.$bar.addClass('i-am-closing-now');
 
-            if(self.options.callback.onClose) {
+            if (self.options.callback.onClose) {
                 self.options.callback.onClose.apply(self);
             }
 
@@ -246,18 +246,18 @@
                 self.$bar.fadeOut(
                     self.options.animation.speed,
                     self.options.animation.easing,
-                    function() {
-                        if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
+                    function () {
+                        if (self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
                     }
                 ).promise().done(
-                    function() {
+                    function () {
                         self.closeCleanUp();
                     }
                 );
             }
             else if (typeof self.options.animation.close === 'string') {
-                self.$bar.addClass(self.options.animation.close).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-                    if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
+                self.$bar.addClass(self.options.animation.close).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                    if (self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
                     self.closeCleanUp();
                 });
             } else {
@@ -265,8 +265,8 @@
                     self.options.animation.close,
                     self.options.animation.speed,
                     self.options.animation.easing,
-                    function() {
-                        if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
+                    function () {
+                        if (self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
                     })
                 .promise().done(function () {
                         self.closeCleanUp();
@@ -275,14 +275,14 @@
 
         }, // end close
 
-        closeCleanUp: function() {
+        closeCleanUp: function () {
             var self = this;
 
             // Modal Cleaning
-            if(self.options.modal) {
+            if (self.options.modal) {
                 $.notyRenderer.setModalCount(-1);
-                if($.notyRenderer.getModalCount() === 0) {
-                    $('.noty_modal').fadeOut(self.options.animation.fadeSpeed, function() {
+                if ($.notyRenderer.getModalCount() === 0) {
+                    $('.noty_modal').fadeOut(self.options.animation.fadeSpeed, function () {
                         $(this).remove();
                     });
                 }
@@ -290,19 +290,19 @@
 
             // Layout Cleaning
             $.notyRenderer.setLayoutCountFor(self, -1);
-            if($.notyRenderer.getLayoutCountFor(self) === 0) $(self.options.layout.container.selector).remove();
+            if ($.notyRenderer.getLayoutCountFor(self) === 0) $(self.options.layout.container.selector).remove();
 
             // Make sure self.$bar has not been removed before attempting to remove it
-            if(typeof self.$bar !== 'undefined' && self.$bar !== null) {
+            if (typeof self.$bar !== 'undefined' && self.$bar !== null) {
 
                 if (typeof self.options.animation.close === 'string') {
                     self.$bar.css('transition', 'all 100ms ease').css('border', 0).css('margin', 0).height(0);
-                    self.$bar.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function() {
+                    self.$bar.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function () {
                     self.$bar.remove();
                     self.$bar = null;
                     self.closed = true;
 
-                        if(self.options.theme.callback && self.options.theme.callback.onClose) {
+                        if (self.options.theme.callback && self.options.theme.callback.onClose) {
                             self.options.theme.callback.onClose.apply(self);
                         }
                     });
@@ -315,7 +315,7 @@
 
             delete $.noty.store[self.options.id]; // deleting noty from store
 
-            if(self.options.theme.callback && self.options.theme.callback.onClose) {
+            if (self.options.theme.callback && self.options.theme.callback.onClose) {
                 self.options.theme.callback.onClose.apply(self);
             }
 
@@ -332,16 +332,16 @@
 
         }, // end close clean up
 
-        setText:function (text) {
-            if(!this.closed) {
+        setText: function (text) {
+            if (!this.closed) {
                 this.options.text = text;
                 this.$bar.find('.noty_text').html(text);
             }
             return this;
         },
 
-        setType:function (type) {
-            if(!this.closed) {
+        setType: function (type) {
+            if (!this.closed) {
                 this.options.type = type;
                 this.options.theme.style.apply(this);
                 this.options.theme.callback.onShow.apply(this);
@@ -349,20 +349,20 @@
             return this;
         },
 
-        setTimeout:function (time) {
-            if(!this.closed) {
+        setTimeout: function (time) {
+            if (!this.closed) {
                 var self = this;
                 this.options.timeout = time;
-                self.$bar.delay(self.options.timeout).promise().done(function() {
+                self.$bar.delay(self.options.timeout).promise().done(function () {
                     self.close();
                 });
             }
             return this;
         },
 
-        stopPropagation:function (evt) {
+        stopPropagation: function (evt) {
             evt = evt || window.event;
-            if(typeof evt.stopPropagation !== "undefined") {
+            if (typeof evt.stopPropagation !== "undefined") {
                 evt.stopPropagation();
             }
             else {
@@ -370,14 +370,14 @@
             }
         },
 
-        closed:false,
+        closed: false,
         showing: false,
-        shown:false
+        shown: false
     }; // end NotyObject
 
     $.notyRenderer = {};
 
-    $.notyRenderer.init = function(options) {
+    $.notyRenderer.init = function (options) {
         // Renderer creates a new noty
         var notification = Object.create(NotyObject).init(options);
 
@@ -396,13 +396,13 @@
         return ($.noty.returns === 'object') ? notification : notification.options.id;
     };
 
-    $.notyRenderer.render = function() {
+    $.notyRenderer.render = function () {
         var instance = $.noty.queue[0];
 
-        if($.type(instance) === 'object') {
-            if(instance.options.dismissQueue) {
-                if(instance.options.maxVisible > 0) {
-                    if($(instance.options.layout.container.selector + ' > li').not('.i-am-closing-now').length < instance.options.maxVisible) {
+        if ($.type(instance) === 'object') {
+            if (instance.options.dismissQueue) {
+                if (instance.options.maxVisible > 0) {
+                    if ($(instance.options.layout.container.selector + ' > li').not('.i-am-closing-now').length < instance.options.maxVisible) {
                         $.notyRenderer.show($.noty.queue.shift());
                     }
                 }
@@ -411,7 +411,7 @@
                 }
             }
             else {
-                if($.noty.ontap) {
+                if ($.noty.ontap) {
                     $.notyRenderer.show($.noty.queue.shift());
                     $.noty.ontap = false;
                 }
@@ -422,15 +422,15 @@
         }
     };
 
-    $.notyRenderer.show = function(notification) {
-        if(notification.options.modal) {
+    $.notyRenderer.show = function (notification) {
+        if (notification.options.modal) {
             $.notyRenderer.createModalFor(notification);
             $.notyRenderer.setModalCount(+1);
         }
 
         // Where is the container?
-        if(notification.options.custom) {
-            if(notification.options.custom.find(notification.options.layout.container.selector).length === 0) {
+        if (notification.options.custom) {
+            if (notification.options.custom.find(notification.options.layout.container.selector).length === 0) {
                 notification.options.custom.append($(notification.options.layout.container.object).addClass('i-am-new'));
             }
             else {
@@ -438,7 +438,7 @@
             }
         }
         else {
-            if($(notification.options.layout.container.selector).length === 0) {
+            if ($(notification.options.layout.container.selector).length === 0) {
                 $('body').append($(notification.options.layout.container.object).addClass('i-am-new'));
             }
             else {
@@ -451,42 +451,42 @@
         notification.show();
     };
 
-    $.notyRenderer.createModalFor = function(notification) {
-        if($('.noty_modal').length === 0) {
+    $.notyRenderer.createModalFor = function (notification) {
+        if ($('.noty_modal').length === 0) {
             var modal = $('<div/>').addClass('noty_modal').addClass(notification.options.theme).data('noty_modal_count', 0);
 
-            if(notification.options.theme.modal && notification.options.theme.modal.css) {
+            if (notification.options.theme.modal && notification.options.theme.modal.css) {
                 modal.css(notification.options.theme.modal.css);
             }
 
             modal.prependTo($('body')).fadeIn(notification.options.animation.fadeSpeed);
 
-            if($.inArray('backdrop', notification.options.closeWith) > -1) {
-                modal.on('click', function(e) {
+            if ($.inArray('backdrop', notification.options.closeWith) > -1) {
+                modal.on('click', function (e) {
                     $.noty.closeAll();
                 });
             }
         }
     };
 
-    $.notyRenderer.getLayoutCountFor = function(notification) {
+    $.notyRenderer.getLayoutCountFor = function (notification) {
         return $(notification.options.layout.container.selector).data('noty_layout_count') || 0;
     };
 
-    $.notyRenderer.setLayoutCountFor = function(notification, arg) {
+    $.notyRenderer.setLayoutCountFor = function (notification, arg) {
         return $(notification.options.layout.container.selector).data('noty_layout_count', $.notyRenderer.getLayoutCountFor(notification) + arg);
     };
 
-    $.notyRenderer.getModalCount = function() {
+    $.notyRenderer.getModalCount = function () {
         return $('.noty_modal').data('noty_modal_count') || 0;
     };
 
-    $.notyRenderer.setModalCount = function(arg) {
+    $.notyRenderer.setModalCount = function (arg) {
         return $('.noty_modal').data('noty_modal_count', $.notyRenderer.getModalCount() + arg);
     };
 
     // This is for custom container
-    $.fn.noty = function(options) {
+    $.fn.noty = function (options) {
         options.custom = $(this);
         return $.notyRenderer.init(options);
     };
@@ -499,38 +499,38 @@
     $.noty.returns = 'object';
     $.noty.store = {};
 
-    $.noty.get = function(id) {
+    $.noty.get = function (id) {
         return $.noty.store.hasOwnProperty(id) ? $.noty.store[id] : false;
     };
 
-    $.noty.close = function(id) {
+    $.noty.close = function (id) {
         return $.noty.get(id) ? $.noty.get(id).close() : false;
     };
 
-    $.noty.setText = function(id, text) {
+    $.noty.setText = function (id, text) {
         return $.noty.get(id) ? $.noty.get(id).setText(text) : false;
     };
 
-    $.noty.setType = function(id, type) {
+    $.noty.setType = function (id, type) {
         return $.noty.get(id) ? $.noty.get(id).setType(type) : false;
     };
 
-    $.noty.clearQueue = function() {
+    $.noty.clearQueue = function () {
         $.noty.queue = [];
     };
 
-    $.noty.closeAll = function() {
+    $.noty.closeAll = function () {
         $.noty.clearQueue();
-        $.each($.noty.store, function(id, noty) {
+        $.each($.noty.store, function (id, noty) {
             noty.close();
         });
     };
 
     var windowAlert = window.alert;
 
-    $.noty.consumeAlert = function(options) {
-        window.alert = function(text) {
-            if(options) {
+    $.noty.consumeAlert = function (options) {
+        window.alert = function (text) {
+            if (options) {
                 options.text = text;
             } else {
                 options = {text:text};
@@ -540,50 +540,50 @@
         };
     };
 
-    $.noty.stopConsumeAlert = function() {
+    $.noty.stopConsumeAlert = function () {
         window.alert = windowAlert;
     };
 
     $.noty.defaults = {
-        layout:'top',
-        theme:'defaultTheme',
-        type:'alert',
-        text:'',
-        dismissQueue: true,
-        template:'<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-        animation:{
-            open:{height:'toggle'},
-            close:{height:'toggle'},
+        layout:         'top',
+        theme:          'defaultTheme',
+        type:           'alert',
+        text:           '',
+        dismissQueue:   true,
+        template:       '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: { height: 'toggle' },
+            close: { height: 'toggle' },
             easing: 'swing',
-            speed : 500,
+            speed: 500,
             fadeSpeed: 'fast',
         },
-        timeout:false,
-        force:false,
-        modal:false,
-        maxVisible:5,
-        killer      : false,
-        closeWith:['click'],
-        callback:{
-            onShow:function () {
+        timeout:        false,
+        force:          false,
+        modal:          false,
+        maxVisible:     5,
+        killer:         false,
+        closeWith:      ['click'],
+        callback: {
+            onShow: function () {
             },
-            afterShow:function () {
+            afterShow: function () {
             },
             beforeClose: function () {
                 return false;               // return true when the close must not happen. User is responsible for calling close() then!
             },
-            onClose:function () {
+            onClose: function () {
             },
-            afterClose:function () {
+            afterClose: function () {
             },
-            onCloseClick:function () {
+            onCloseClick: function () {
             }
         },
-        buttons:false
+        buttons:        false
     };
 
-    $(window).on('resize', function() {
-        $.each($.noty.layouts, function(index, layout) {
+    $(window).on('resize', function () {
+        $.each($.noty.layouts, function (index, layout) {
             layout.container.style.apply($(layout.container.selector));
         });
     });
